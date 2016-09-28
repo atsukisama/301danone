@@ -97,8 +97,17 @@ def tri_fusion(tab, etape):
     else:
         return fusion(tri_fusion(tab[0:len(tab)//2], etape), tri_fusion(tab[len(tab)//2:], etape), etape)
 
+
+## main
+
+if len(sys.argv) <= 1:
+    exit(84)
 with open(sys.argv[1]) as content_file:
-    content = [float(n) for n in content_file.read().split()]
+    try:
+        content = [float(n) for n in content_file.read().split()]
+    except:
+        exit(84)
+
 l = len(content)
 print l,u"\xe9l\xe9ments"
 tri_selection(copy.deepcopy(content), l)
@@ -110,3 +119,5 @@ tri_fusion(copy.deepcopy(content), etape)
 print "tri fusion :",etape[0],"comparaisons"
 
 print "tri rapide :",tri_rapide(copy.deepcopy(content), 0, l - 1, etape = [0])[0],"comparaisons"
+
+exit(0)
