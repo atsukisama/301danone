@@ -1,0 +1,112 @@
+#!/usr/bin/env python2
+
+import sys
+import copy
+
+def print_result(tri_type, nb_operations):
+    print "tri",tri_type,":",nb_operations,"comparaisons"
+    return
+
+def tri_selection(tab, nb_elem):
+    etape = 0
+    i = 0
+    while i < (nb_elem - 1):
+        min = i
+        j = i + 1
+        while j < nb_elem:
+            etape = etape + 1
+            if tab[j] < tab[min]:
+                min = j
+            j = j + 1
+        if min != i:
+            tmp = tab[i]
+            tab[i] = tab[min]
+            tab[min] = tmp
+        i = i + 1
+    print u"tri par s\xe9lection :",etape,"comparaisons"
+    return etape
+
+def tri_insertion(tab, nb_elem):
+    etape = 0
+    i = 0
+    while i < nb_elem:
+        x = tab[i]
+        j = i
+        while j > 0 and tab[j - 1] > x:
+            etape = etape + 1
+            tab[j] = tab[j - 1]
+            j = j - 1
+        tab[j] = x
+        i = i + 1
+    print u"tri par insertion :",etape,"comparaisons"
+    return etape
+
+def tri_bulle(tab, nb_elem):
+    etape = 0
+    i = nb_elem
+    while i > 0:
+        j = 0
+        while j < (i - 1):
+            if tab[j + 1] < tab[j]:
+                tmp = tab[j + 1]
+                tab[j + 1] = tab[j]
+                tab[j] = tmp
+            j = j + 1
+            etape = etape + 1
+        i = i - 1
+    print u"tri \xe0 bulles :",etape,"comparaisons"
+    return etape
+
+def partition(tab, left, right, etape):
+    pivot = tab[right]
+    i = left
+    j = left
+    while j < right:
+        if tab[j] <= pivot:
+            etape[0] = etape[0] + 1
+            tab[i], tab[j] = tab[j], tab[i]
+            i = i + 1
+        #etape[0] = etape[0] + 1
+        j = j + 1
+    tab[i], tab[right] = tab[right], tab[i]
+    return i
+
+def tri_rapide(tab, left, right, etape):
+    if left < right:
+        etape[0] = etape[0] + 1
+        part = partition(tab, left, right, etape)
+        tri_rapide(tab, left, part - 1, etape)
+        tri_rapide(tab, part + 1, right, etape)
+    return etape
+
+def fusion(a, b, etape):
+    if a == []:
+        return b
+    if b == []:
+        return a
+    etape[0] = etape[0] + 1
+    if a[0] < b[0]:
+        return ([a[0]] + fusion(a[1:], b, etape))
+    else:
+        return ([b[0]] + fusion(a, b[1:], etape))
+
+
+def tri_fusion(tab, etape):
+    if len(tab) <= 1:
+        return tab
+    else:
+        return fusion(tri_fusion(tab[0:len(tab)//2], etape), tri_fusion(tab[len(tab)//2:], etape), etape)
+
+with open(sys.argv[1]) as content_file:
+    content = [float(n) for n in content_file.read().split()]
+l = len(content)
+print l,u"\xe9l\xe9ments"
+tri_selection(copy.deepcopy(content), l)
+tri_insertion(copy.deepcopy(content), l)
+tri_bulle(copy.deepcopy(content), l)
+
+etape = [0]
+tri_fusion(copy.deepcopy(content), etape)
+print "tri fusion :",etape[0],"comparaisons"
+
+print "tri rapide :",tri_rapide(copy.deepcopy(content), 0, l - 1, etape = [0])[0],"comparaisons"
