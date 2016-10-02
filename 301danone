@@ -136,7 +136,7 @@ def tri_fusion(tab, etape):
 
 ## main
 
-if len(sys.argv) <= 1:
+if len(sys.argv) <= 1 or len(sys.argv) > 2:
     exit(1)
 with open(sys.argv[1]) as content_file:
     try:
@@ -145,16 +145,18 @@ with open(sys.argv[1]) as content_file:
         exit(1)
 
 l = len(content)
-print l,"éléments"
-tri_selection(copy.deepcopy(content), l)
-tri_insertion(copy.deepcopy(content))
-tri_bulle(copy.deepcopy(content), l)
 
-etape = [0]
-tri_fusion(copy.deepcopy(content), etape)
-print "tri fusion :",etape[0],"comparaisons"
+if l > 0:
+    print l, "éléments"
+    tri_selection(copy.deepcopy(content), l)
+    tri_insertion(copy.deepcopy(content))
+    tri_bulle(copy.deepcopy(content), l)
 
-#print "tri rapide :",tri_rapide(copy.deepcopy(content), 0, l - 1, etape = [0])[0],"comparaisons"
-print "tri rapide :",tri_rapide(copy.deepcopy(content)),"comparaisons"
+    etape = [0]
+    tri_fusion(copy.deepcopy(content), etape)
+    print "tri fusion :", etape[0], "comparaisons"
+
+    # print "tri rapide :",tri_rapide(copy.deepcopy(content), 0, l - 1, etape = [0])[0],"comparaisons"
+    print "tri rapide :", tri_rapide(copy.deepcopy(content)), "comparaisons"
 
 exit(0)
