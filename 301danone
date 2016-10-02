@@ -158,5 +158,6 @@ if l > 0:
 
     # print "tri rapide :",tri_rapide(copy.deepcopy(content), 0, l - 1, etape = [0])[0],"comparaisons"
     print "tri rapide :", tri_rapide(copy.deepcopy(content)), "comparaisons"
-
-exit(0)
+    exit(0)
+else:
+    exit(1)
