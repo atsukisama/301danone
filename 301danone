@@ -23,7 +23,7 @@ def tri_selection(tab, nb_elem):
     print "tri par sélection :",etape,"comparaisons"
     return etape
 
-def tri_insertion(tab, nb_elem):
+def tri_insertion_old(tab, nb_elem):
     etape = 0
     i = 0
     while i < nb_elem:
@@ -37,6 +37,26 @@ def tri_insertion(tab, nb_elem):
         i = i + 1
     print "tri par insertion :",etape,"comparaisons"
     return etape
+
+def tri_insertion(tab):
+    n = 0
+    i = 0
+    new_tab = []
+    while i < len(tab):
+        if new_tab == []:
+            new_tab.append(tab[i])
+        else:
+            c = 0
+            while c < len(new_tab):
+                n = n + 1
+                if (new_tab[c] > tab[i]):
+                    new_tab.insert(c, tab[i])
+                    break
+                c = c + 1
+            if c == len(new_tab):
+                new_tab.append(tab[i])
+        i = i + 1
+    print "tri par insertion:",n,"comparaisons"
 
 def tri_bulle(tab, nb_elem):
     etape = 0
@@ -67,12 +87,32 @@ def partition(tab, left, right, etape):
     tab[i], tab[right] = tab[right], tab[i]
     return i
 
-def tri_rapide(tab, left, right, etape):
+def tri_rapide_old(tab, left, right, etape):
     if left < right:
         etape[0] = etape[0] + 1
         part = partition(tab, left, right, etape)
         tri_rapide(tab, left, part - 1, etape)
         tri_rapide(tab, part + 1, right, etape)
+    return etape
+
+def tri_rapide(tab):
+    if (len(tab) < 2):
+        return 0
+    etape = 0
+    pivot = 0
+    left = []
+    right = []
+    i = 0
+    while i < len(tab):
+        if i != pivot:
+            etape = etape + 1
+            if tab[i] < tab[pivot]:
+                left.append(tab[i])
+            if tab[i] >= tab[pivot]:
+                right.append(tab[i])
+        i = i + 1
+    etape = etape + tri_rapide(left)
+    etape = etape + tri_rapide(right)
     return etape
 
 def fusion(a, b, etape):
@@ -107,13 +147,14 @@ with open(sys.argv[1]) as content_file:
 l = len(content)
 print l,"éléments"
 tri_selection(copy.deepcopy(content), l)
-tri_insertion(copy.deepcopy(content), l)
+tri_insertion(copy.deepcopy(content))
 tri_bulle(copy.deepcopy(content), l)
 
 etape = [0]
 tri_fusion(copy.deepcopy(content), etape)
 print "tri fusion :",etape[0],"comparaisons"
 
-print "tri rapide :",tri_rapide(copy.deepcopy(content), 0, l - 1, etape = [0])[0],"comparaisons"
+#print "tri rapide :",tri_rapide(copy.deepcopy(content), 0, l - 1, etape = [0])[0],"comparaisons"
+print "tri rapide :",tri_rapide(copy.deepcopy(content)),"comparaisons"
 
 exit(0)
