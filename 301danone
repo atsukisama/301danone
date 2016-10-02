@@ -56,7 +56,7 @@ def tri_insertion(tab):
             if c == len(new_tab):
                 new_tab.append(tab[i])
         i = i + 1
-    print "tri par insertion:",n,"comparaisons"
+    print "tri par insertion :",n,"comparaisons"
 
 def tri_bulle(tab, nb_elem):
     etape = 0
